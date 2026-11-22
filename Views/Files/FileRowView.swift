@@ -13,7 +13,7 @@ struct FileRowView: View {
                 // Icono según tipo de archivo
                 Image(systemName: file.iconName)
                     .font(.system(size: 16))
-                    .foregroundColor(file.isDirectory ? Color(red: 0.35, green: 0.65, blue: 1.0) : Color(white: 0.70))
+                    .foregroundColor(file.isDirectory ? SmartTheme.blueBright : SmartTheme.textSecondary)
                     .frame(width: 28, height: 28)
                     .background(Color.white.opacity(0.05))
                     .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))

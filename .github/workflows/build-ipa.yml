@@ -23,6 +23,8 @@ jobs:
 
       - name: Preparar Directorio de Compilación
         run: |
+          which xcodegen || brew install xcodegen
+          xcodegen generate
           mkdir -p build
           mkdir -p output
 

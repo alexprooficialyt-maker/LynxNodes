@@ -1,6 +1,7 @@
 import SwiftUI
 
-/// Pestaña independiente de Archivos con selector rápido de servidor (Tema Negro y Amarillo)
+/// Pestaña independiente de Archivos con selector rápido de servidor
+/// Estética Apple iOS 26 Liquid Glass en Negro, Azul y Blanco
 struct DirectFilesTabView: View {
     @EnvironmentObject private var appEnv: AppEnvironment
     @State private var selectedServerId: String = ""
@@ -12,11 +13,11 @@ struct DirectFilesTabView: View {
                     VStack(spacing: 12) {
                         Image(systemName: "folder")
                             .font(.system(size: 36))
-                            .foregroundColor(LynxTheme.gold.opacity(0.4))
+                            .foregroundColor(SmartTheme.blue.opacity(0.4))
                         
                         Text("No hay servidores disponibles")
                             .font(.system(size: 15, weight: .semibold))
-                            .foregroundColor(LynxTheme.textSecondary)
+                            .foregroundColor(SmartTheme.textSecondary)
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                 } else {
@@ -24,7 +25,7 @@ struct DirectFilesTabView: View {
                     VStack(alignment: .leading, spacing: 8) {
                         Text("Servidor Seleccionado")
                             .font(.system(size: 11, weight: .semibold))
-                            .foregroundColor(LynxTheme.textSecondary)
+                            .foregroundColor(SmartTheme.textSecondary)
                             .padding(.horizontal, 16)
                         
                         ScrollView(.horizontal, showsIndicators: false) {
@@ -45,16 +46,16 @@ struct DirectFilesTabView: View {
                                             Text(server.name)
                                                 .font(.system(size: 12, weight: isSelected ? .bold : .medium))
                                         }
-                                        .foregroundColor(isSelected ? LynxTheme.goldBright : LynxTheme.textSecondary)
+                                        .foregroundColor(isSelected ? .white : SmartTheme.textSecondary)
                                         .padding(.horizontal, 12)
                                         .padding(.vertical, 8)
                                         .background(
                                             RoundedRectangle(cornerRadius: 12, style: .continuous)
-                                                .fill(isSelected ? LynxTheme.goldGlassGradient : LinearGradient(colors: [Color.white.opacity(0.04)], startPoint: .top, endPoint: .bottom))
+                                                .fill(isSelected ? SmartTheme.blue.opacity(0.25) : Color.white.opacity(0.04))
                                         )
                                         .overlay(
                                             RoundedRectangle(cornerRadius: 12, style: .continuous)
-                                                .stroke(isSelected ? LynxTheme.goldBright.opacity(0.6) : Color.white.opacity(0.06), lineWidth: 0.8)
+                                                .stroke(isSelected ? SmartTheme.blue.opacity(0.6) : Color.white.opacity(0.06), lineWidth: 0.8)
                                         )
                                     }
                                     .buttonStyle(PlainButtonStyle())

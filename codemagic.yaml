@@ -1,6 +1,6 @@
 workflows:
   ios-build:
-    name: LynxNodes — Release IPA
+    name: SmartBot — Release IPA
     max_build_duration: 60
     instance_type: mac_mini_m2
 
@@ -42,8 +42,10 @@ workflows:
         script: |
           mkdir -p Payload
           cp -r build/Build/Products/Release-iphoneos/LynxNodes.app Payload/
-          zip -qr LynxNodes.ipa Payload
+          zip -qr SmartBot.ipa Payload
+          cp SmartBot.ipa LynxNodes.ipa
           rm -rf Payload
 
     artifacts:
+      - SmartBot.ipa
       - LynxNodes.ipa

@@ -1,6 +1,6 @@
 import SwiftUI
 
-/// Tarjeta de servidor individual con estética LynxNodes Liquid Glass y Métricas Reales
+/// Tarjeta de servidor individual con estética SmartBot Liquid Glass y Métricas Reales
 struct ServerCardView: View {
     let server: Server
     
@@ -18,15 +18,15 @@ struct ServerCardView: View {
                         HStack(spacing: 6) {
                             Text(server.node)
                                 .font(.system(size: 11, weight: .semibold, design: .monospaced))
-                                .foregroundColor(LynxTheme.goldBright)
-                                .padding(.horizontal, 6)
+                                .foregroundColor(SmartTheme.blue)
+                                .padding(.horizontal, 7)
                                 .padding(.vertical, 2)
-                                .background(LynxTheme.gold.opacity(0.12))
+                                .background(SmartTheme.blue.opacity(0.12))
                                 .clipShape(RoundedRectangle(cornerRadius: 6, style: .continuous))
                             
                             Text("ID: \(server.id)")
                                 .font(.system(size: 11, design: .monospaced))
-                                .foregroundColor(LynxTheme.textMuted)
+                                .foregroundColor(SmartTheme.textMuted)
                         }
                     }
                     
@@ -46,7 +46,7 @@ struct ServerCardView: View {
                         title: "CPU",
                         value: cpuText(),
                         ratio: cpuProgress(),
-                        accent: server.currentState == .running ? LynxTheme.goldBright : Color(white: 0.5)
+                        accent: server.currentState == .running ? SmartTheme.blue : Color(white: 0.45)
                     )
                     
                     // RAM Real vs Límite
@@ -55,7 +55,7 @@ struct ServerCardView: View {
                         title: "RAM",
                         value: memoryText(),
                         ratio: memoryProgress(),
-                        accent: server.currentState == .running ? Color(red: 0.13, green: 0.77, blue: 0.37) : Color(white: 0.5)
+                        accent: server.currentState == .running ? SmartTheme.statusRunning : Color(white: 0.45)
                     )
                     
                     // Disco Real vs Límite
@@ -64,14 +64,14 @@ struct ServerCardView: View {
                         title: "DISCO",
                         value: diskText(),
                         ratio: diskProgress(),
-                        accent: server.currentState == .running ? Color(red: 0.0, green: 0.90, blue: 1.0) : Color(white: 0.5)
+                        accent: server.currentState == .running ? SmartTheme.blueBright : Color(white: 0.45)
                     )
                     
                     Spacer()
                     
                     Image(systemName: "chevron.right")
                         .font(.system(size: 12, weight: .bold))
-                        .foregroundColor(LynxTheme.textMuted)
+                        .foregroundColor(SmartTheme.textMuted)
                 }
             }
         }
@@ -134,10 +134,10 @@ struct ServerCardView: View {
             HStack(spacing: 4) {
                 Image(systemName: icon)
                     .font(.system(size: 9))
-                    .foregroundColor(LynxTheme.textSecondary)
+                    .foregroundColor(SmartTheme.textSecondary)
                 Text(title)
                     .font(.system(size: 9, weight: .semibold, design: .rounded))
-                    .foregroundColor(LynxTheme.textSecondary)
+                    .foregroundColor(SmartTheme.textSecondary)
             }
             
             Text(value)

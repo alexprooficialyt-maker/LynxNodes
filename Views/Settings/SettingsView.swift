@@ -1,6 +1,7 @@
 import SwiftUI
 
-/// Pestaña Ajustes: Gestión de conexión, seguridad con Face ID y preferencias (Tema Negro y Amarillo)
+/// Pestaña Ajustes: Gestión de conexión, seguridad con Face ID y preferencias
+/// Estética Apple iOS 26 Liquid Glass en Negro, Azul y Blanco
 struct SettingsView: View {
     @EnvironmentObject private var appEnv: AppEnvironment
     @StateObject private var viewModel = SettingsViewModel()
@@ -10,49 +11,21 @@ struct SettingsView: View {
             ScrollView {
                 VStack(spacing: 20) {
                     
-                    // Sección: Conexión con Pterodactyl
+                    // Sección: Credenciales y Clave API
                     VStack(alignment: .leading, spacing: 10) {
-                        Text("Conexión con LynxNodes")
+                        Text("Credenciales API")
                             .font(.system(size: 13, weight: .bold, design: .rounded))
-                            .foregroundColor(LynxTheme.goldBright)
+                            .foregroundColor(SmartTheme.blue)
                             .padding(.horizontal, 4)
                         
                         GlassCard(cornerRadius: 18, padding: 16) {
                             VStack(spacing: 14) {
-                                // URL del Panel
-                                VStack(alignment: .leading, spacing: 6) {
-                                    Text("URL del Panel")
-                                        .font(.system(size: 11, weight: .medium))
-                                        .foregroundColor(LynxTheme.textSecondary)
-                                    
-                                    HStack {
-                                        TextField("https://panel.lynxnodes.es", text: $viewModel.panelUrl)
-                                            .textFieldStyle(PlainTextFieldStyle())
-                                            .font(.system(size: 13, design: .monospaced))
-                                            .foregroundColor(.white)
-                                            .autocapitalization(.none)
-                                            .disableAutocorrection(true)
-                                        
-                                        Button("Guardar") {
-                                            viewModel.savePanelUrl()
-                                        }
-                                        .font(.system(size: 12, weight: .bold))
-                                        .foregroundColor(LynxTheme.goldBright)
-                                    }
-                                    .padding(10)
-                                    .background(Color.white.opacity(0.04))
-                                    .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
-                                }
-                                
-                                Divider()
-                                    .background(Color.white.opacity(0.08))
-                                
                                 // API Key enmascarada
                                 VStack(alignment: .leading, spacing: 6) {
                                     HStack {
                                         Text("Client API Key (Guardada en Keychain)")
                                             .font(.system(size: 11, weight: .medium))
-                                            .foregroundColor(LynxTheme.textSecondary)
+                                            .foregroundColor(SmartTheme.textSecondary)
                                         
                                         Spacer()
                                         
@@ -61,23 +34,23 @@ struct SettingsView: View {
                                             viewModel.showApiKeyUpdateSheet = true
                                         }
                                         .font(.system(size: 12, weight: .bold))
-                                        .foregroundColor(LynxTheme.goldBright)
+                                        .foregroundColor(SmartTheme.blue)
                                     }
                                     
                                     HStack(spacing: 8) {
                                         Image(systemName: "key.fill")
                                             .font(.system(size: 12))
-                                            .foregroundColor(LynxTheme.gold)
+                                            .foregroundColor(SmartTheme.blue)
                                         
                                         Text(viewModel.maskedApiKey)
                                             .font(.system(size: 13, design: .monospaced))
-                                            .foregroundColor(LynxTheme.goldBright)
+                                            .foregroundColor(.white)
                                         
                                         Spacer()
                                         
                                         Image(systemName: "checkmark.shield.fill")
                                             .font(.system(size: 13))
-                                            .foregroundColor(Color(red: 0.22, green: 0.85, blue: 0.45))
+                                            .foregroundColor(SmartTheme.statusRunning)
                                     }
                                     .padding(10)
                                     .background(Color.white.opacity(0.04))
@@ -92,7 +65,7 @@ struct SettingsView: View {
                     VStack(alignment: .leading, spacing: 10) {
                         Text("Seguridad y Acceso")
                             .font(.system(size: 13, weight: .bold, design: .rounded))
-                            .foregroundColor(LynxTheme.goldBright)
+                            .foregroundColor(SmartTheme.blue)
                             .padding(.horizontal, 4)
                         
                         GlassCard(cornerRadius: 18, padding: 16) {
@@ -103,9 +76,9 @@ struct SettingsView: View {
                                 HStack(spacing: 12) {
                                     Image(systemName: "faceid")
                                         .font(.system(size: 18))
-                                        .foregroundColor(LynxTheme.goldBright)
+                                        .foregroundColor(SmartTheme.blue)
                                         .frame(width: 28, height: 28)
-                                        .background(LynxTheme.gold.opacity(0.12))
+                                        .background(SmartTheme.blue.opacity(0.12))
                                         .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
                                     
                                     VStack(alignment: .leading, spacing: 2) {
@@ -115,11 +88,11 @@ struct SettingsView: View {
                                         
                                         Text("Solicitar autenticación al abrir la app")
                                             .font(.system(size: 11))
-                                            .foregroundColor(LynxTheme.textSecondary)
+                                            .foregroundColor(SmartTheme.textSecondary)
                                     }
                                 }
                             }
-                            .tint(LynxTheme.gold)
+                            .tint(SmartTheme.blue)
                         }
                     }
                     .padding(.horizontal, 20)
@@ -128,7 +101,7 @@ struct SettingsView: View {
                     VStack(alignment: .leading, spacing: 10) {
                         Text("Consola")
                             .font(.system(size: 13, weight: .bold, design: .rounded))
-                            .foregroundColor(LynxTheme.goldBright)
+                            .foregroundColor(SmartTheme.blue)
                             .padding(.horizontal, 4)
                         
                         GlassCard(cornerRadius: 18, padding: 16) {
@@ -144,7 +117,7 @@ struct SettingsView: View {
                                         
                                         Text("\(Int(viewModel.consoleFontSize)) pt")
                                             .font(.system(size: 12, weight: .semibold, design: .monospaced))
-                                            .foregroundColor(LynxTheme.goldBright)
+                                            .foregroundColor(SmartTheme.blue)
                                     }
                                     
                                     Slider(
@@ -155,7 +128,7 @@ struct SettingsView: View {
                                         in: 10...18,
                                         step: 1
                                     )
-                                    .tint(LynxTheme.gold)
+                                    .tint(SmartTheme.blue)
                                 }
                                 
                                 Divider()
@@ -172,10 +145,10 @@ struct SettingsView: View {
                                             .foregroundColor(.white)
                                         Text("Bajar automáticamente con cada nueva línea de log")
                                             .font(.system(size: 11))
-                                            .foregroundColor(LynxTheme.textSecondary)
+                                            .foregroundColor(SmartTheme.textSecondary)
                                     }
                                 }
-                                .tint(LynxTheme.gold)
+                                .tint(SmartTheme.blue)
                             }
                         }
                     }
@@ -191,27 +164,27 @@ struct SettingsView: View {
                             Text("Desconectar Cuenta")
                                 .font(.system(size: 14, weight: .bold))
                         }
-                        .foregroundColor(Color(red: 0.95, green: 0.35, blue: 0.35))
+                        .foregroundColor(SmartTheme.statusOffline)
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 14)
-                        .background(Color(red: 0.95, green: 0.35, blue: 0.35).opacity(0.12))
+                        .background(SmartTheme.statusOffline.opacity(0.12))
                         .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
                         .overlay(
                             RoundedRectangle(cornerRadius: 16, style: .continuous)
-                                .stroke(Color(red: 0.95, green: 0.35, blue: 0.35).opacity(0.25), lineWidth: 0.8)
+                                .stroke(SmartTheme.statusOffline.opacity(0.25), lineWidth: 0.8)
                         )
                     }
                     .padding(.horizontal, 20)
                     .padding(.top, 8)
                     
-                    // Info de versión
+                    // Info de versión SmartBot
                     VStack(spacing: 4) {
-                        Text("LynxNodes v1.0.0 (Gold & Obsidian Edition)")
-                            .font(.system(size: 12, weight: .medium, design: .rounded))
-                            .foregroundColor(LynxTheme.gold.opacity(0.7))
-                        Text("panel.lynxnodes.es")
-                            .font(.system(size: 11, design: .monospaced))
-                            .foregroundColor(LynxTheme.textMuted)
+                        Text("SmartBot")
+                            .font(.system(size: 13, weight: .bold, design: .rounded))
+                            .foregroundColor(.white)
+                        Text("Sistema de Control de Hosting")
+                            .font(.system(size: 11, weight: .medium))
+                            .foregroundColor(SmartTheme.textSecondary)
                     }
                     .padding(.top, 12)
                     
@@ -242,9 +215,9 @@ struct SettingsView: View {
                         VStack(alignment: .leading, spacing: 8) {
                             Text("Nueva Client API Key")
                                 .font(.system(size: 13, weight: .semibold))
-                                .foregroundColor(LynxTheme.textSecondary)
+                                .foregroundColor(SmartTheme.textSecondary)
                             
-                            SecureField("Pega tu clave (ptlc_...)", text: $viewModel.newApiKeyInput)
+                            SecureField("Introduce tu clave (ptlc_...)", text: $viewModel.newApiKeyInput)
                                 .textFieldStyle(PlainTextFieldStyle())
                                 .font(.system(size: 13, design: .monospaced))
                                 .foregroundColor(.white)
@@ -253,7 +226,7 @@ struct SettingsView: View {
                                 .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
                                 .overlay(
                                     RoundedRectangle(cornerRadius: 12, style: .continuous)
-                                        .stroke(LynxTheme.gold.opacity(0.4), lineWidth: 0.8)
+                                        .stroke(SmartTheme.blue.opacity(0.5), lineWidth: 0.8)
                                 )
                                 .autocapitalization(.none)
                         }
@@ -261,14 +234,14 @@ struct SettingsView: View {
                         Button {
                             viewModel.updateApiKey()
                         } label: {
-                            Text("Guardar Nueva Clave en Keychain")
+                            Text("Guardar en Keychain")
                                 .font(.system(size: 15, weight: .bold))
-                                .foregroundColor(.black)
+                                .foregroundColor(.white)
                                 .frame(maxWidth: .infinity)
                                 .padding(.vertical, 14)
-                                .background(LynxTheme.goldGradient)
+                                .background(SmartTheme.blueGradient)
                                 .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
-                                .shadow(color: LynxTheme.gold.opacity(0.4), radius: 8, y: 2)
+                                .shadow(color: SmartTheme.blue.opacity(0.4), radius: 8, y: 2)
                         }
                         .disabled(viewModel.newApiKeyInput.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
                         
@@ -283,7 +256,7 @@ struct SettingsView: View {
                             Button("Cancelar") {
                                 viewModel.showApiKeyUpdateSheet = false
                             }
-                            .foregroundColor(LynxTheme.textSecondary)
+                            .foregroundColor(SmartTheme.textSecondary)
                         }
                     }
                 }

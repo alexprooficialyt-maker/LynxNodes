@@ -1,18 +1,19 @@
 import SwiftUI
 
-/// Barra minimalista de métricas (CPU, RAM, Disco) con acento Dorado Lynx
+/// Barra minimalista de métricas (CPU, RAM, Disco)
+/// Estética Apple iOS 26 Liquid Glass en Negro, Azul y Blanco
 struct MetricBar: View {
     let title: String
     let valueText: String
     let progress: Double // 0.0 a 1.0
-    var tintColor: Color = LynxTheme.gold
+    var tintColor: Color = SmartTheme.blue
     
     var body: some View {
         VStack(alignment: .leading, spacing: 5) {
             HStack {
                 Text(title)
                     .font(.system(size: 11, weight: .medium, design: .rounded))
-                    .foregroundColor(LynxTheme.textSecondary)
+                    .foregroundColor(SmartTheme.textSecondary)
                 
                 Spacer()
                 
@@ -29,13 +30,13 @@ struct MetricBar: View {
                         .fill(Color.white.opacity(0.08))
                         .frame(height: 5)
                     
-                    // Barra activa en Degradado Dorado
+                    // Barra activa en Degradado Azul
                     Capsule()
                         .fill(
                             LinearGradient(
                                 colors: [
-                                    tintColor.opacity(0.8),
-                                    LynxTheme.goldBright
+                                    tintColor.opacity(0.85),
+                                    SmartTheme.blueBright
                                 ],
                                 startPoint: .leading,
                                 endPoint: .trailing

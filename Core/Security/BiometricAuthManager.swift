@@ -56,7 +56,7 @@ final class BiometricAuthManager {
         }
     }
     
-    func authenticate(reason: String = "Desbloquea LynxNodes para acceder a tus servidores") async -> Result<Bool, Error> {
+    func authenticate(reason: String = "Desbloquea SmartBot para acceder a tus servidores") async -> Result<Bool, Error> {
         let context = LAContext()
         context.localizedCancelTitle = "Cancelar"
         

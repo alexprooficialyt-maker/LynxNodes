@@ -1,9 +1,10 @@
 import SwiftUI
 
-/// Vista de consola de comandos interactiva en tiempo real con WebSocket (Tema LynxNodes Liquid Glass)
+/// Vista de consola de comandos interactiva en tiempo real con WebSocket
+/// Estética Apple iOS 26 Liquid Glass en Negro, Azul y Blanco
 struct ConsoleView: View {
     @ObservedObject var viewModel: ServerConsoleViewModel
-    @AppStorage("lynxnodes_console_font_size") private var consoleFontSize: Double = 12.0
+    @AppStorage("smartbot_console_font_size") private var consoleFontSize: Double = 12.0
     
     @FocusState private var isInputFocused: Bool
     
@@ -24,7 +25,7 @@ struct ConsoleView: View {
                             if viewModel.logs.isEmpty {
                                 Text("Conectando con la consola de Wings...")
                                     .font(.system(size: CGFloat(consoleFontSize), weight: .regular, design: .monospaced))
-                                    .foregroundColor(Color(white: 0.45))
+                                    .foregroundColor(SmartTheme.textMuted)
                                     .padding(.top, 24)
                                     .padding(.horizontal, 12)
                             } else {
@@ -46,7 +47,7 @@ struct ConsoleView: View {
                         }
                         .padding(12)
                     }
-                    .background(Color(red: 0.04, green: 0.04, blue: 0.06))
+                    .background(Color(red: 0.03, green: 0.03, blue: 0.04))
                     .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
                     .overlay(
                         RoundedRectangle(cornerRadius: 16, style: .continuous)
@@ -76,7 +77,7 @@ struct ConsoleView: View {
                         .padding(.vertical, 5)
                         .background(.ultraThinMaterial)
                         .clipShape(Capsule())
-                        .foregroundColor(viewModel.autoScrollEnabled ? Color(red: 1.0, green: 0.75, blue: 0.0) : Color(white: 0.60))
+                        .foregroundColor(viewModel.autoScrollEnabled ? SmartTheme.blueBright : SmartTheme.textSecondary)
                         .overlay(
                             Capsule()
                                 .stroke(Color.white.opacity(0.15), lineWidth: 0.5)
@@ -105,7 +106,7 @@ struct ConsoleView: View {
                     } label: {
                         Image(systemName: "trash")
                             .font(.system(size: 12))
-                            .foregroundColor(Color(white: 0.70))
+                            .foregroundColor(SmartTheme.textSecondary)
                             .padding(8)
                             .background(.ultraThinMaterial)
                             .clipShape(Circle())
@@ -133,7 +134,7 @@ struct ConsoleView: View {
             HStack(spacing: 8) {
                 Text(">")
                     .font(.system(size: 15, weight: .black, design: .monospaced))
-                    .foregroundColor(Color(red: 1.0, green: 0.75, blue: 0.0))
+                    .foregroundColor(SmartTheme.blue)
                 
                 TextField("Enviar comando...", text: $viewModel.commandInput)
                     .textFieldStyle(PlainTextFieldStyle())
@@ -148,41 +149,42 @@ struct ConsoleView: View {
             }
             .padding(.horizontal, 14)
             .padding(.vertical, 12)
-            .background(Color(red: 0.08, green: 0.09, blue: 0.13)) // #141620
+            .background(Color(red: 0.07, green: 0.08, blue: 0.12))
             .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
             .overlay(
                 RoundedRectangle(cornerRadius: 14, style: .continuous)
-                    .stroke(isInputFocused ? Color(red: 1.0, green: 0.75, blue: 0.0).opacity(0.6) : Color.white.opacity(0.14), lineWidth: 0.8)
+                    .stroke(isInputFocused ? SmartTheme.blue.opacity(0.6) : Color.white.opacity(0.12), lineWidth: 0.8)
             )
             
-            // Botón Enviar en Amarillo Lynx
+            // Botón Enviar en Azul SmartBot
             Button {
                 viewModel.sendCurrentCommand()
             } label: {
                 HStack(spacing: 4) {
                     Image(systemName: "arrow.up")
-                        .font(.system(size: 13, weight: .black))
+                        .font(.system(size: 14, weight: .bold))
                 }
-                .foregroundColor(.black)
-                .frame(width: 42, height: 42)
+                .foregroundColor(.white)
+                .frame(width: 44, height: 44)
                 .background(
                     LinearGradient(
                         colors: [
-                            Color(red: 1.00, green: 0.75, blue: 0.00),
-                            Color(red: 1.00, green: 0.65, blue: 0.00)
+                            SmartTheme.blueBright,
+                            SmartTheme.blueDark
                         ],
                         startPoint: .topLeading,
                         endPoint: .bottomTrailing
                     )
                 )
                 .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
-                .shadow(color: Color(red: 1.0, green: 0.72, blue: 0.0).opacity(0.35), radius: 6, y: 2)
+                .shadow(color: SmartTheme.blue.opacity(0.35), radius: 6, y: 2)
             }
             .disabled(viewModel.commandInput.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+            .opacity(viewModel.commandInput.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? 0.5 : 1.0)
         }
         .padding(.horizontal, 16)
         .padding(.vertical, 8)
-        .background(Color(red: 0.05, green: 0.06, blue: 0.09))
+        .background(Color(red: 0.03, green: 0.04, blue: 0.06))
     }
     
     // MARK: - Barra de Métricas en Vivo
@@ -191,10 +193,10 @@ struct ConsoleView: View {
         GlassCard(cornerRadius: 16, padding: 12) {
             VStack(spacing: 8) {
                 HStack(spacing: 12) {
-                    metricItem(label: "CPU", value: viewModel.stats.formattedCpu, highlightColor: Color(red: 1.0, green: 0.75, blue: 0.0))
-                    metricItem(label: "RAM", value: "\(viewModel.stats.formattedMemoryUsed) / \(viewModel.stats.formattedMemoryLimit)", highlightColor: .white)
+                    metricItem(label: "CPU", value: viewModel.stats.formattedCpu, highlightColor: SmartTheme.blue)
+                    metricItem(label: "RAM", value: "\(viewModel.stats.formattedMemoryUsed) / \(viewModel.stats.formattedMemoryLimit)", highlightColor: SmartTheme.statusRunning)
                     metricItem(label: "Disco", value: viewModel.stats.formattedDisk, highlightColor: .white)
-                    metricItem(label: "Uptime", value: viewModel.stats.formattedUptime, highlightColor: Color(red: 0.0, green: 0.90, blue: 1.0))
+                    metricItem(label: "Uptime", value: viewModel.stats.formattedUptime, highlightColor: SmartTheme.blueBright)
                 }
                 
                 // Tráfico de red
@@ -202,10 +204,10 @@ struct ConsoleView: View {
                     HStack(spacing: 4) {
                         Image(systemName: "arrow.down")
                             .font(.system(size: 9))
-                            .foregroundColor(Color(red: 0.13, green: 0.77, blue: 0.37))
+                            .foregroundColor(SmartTheme.statusRunning)
                         Text(viewModel.stats.formattedNetworkRx)
                             .font(.system(size: 10, design: .monospaced))
-                            .foregroundColor(Color(white: 0.70))
+                            .foregroundColor(SmartTheme.textSecondary)
                     }
                     
                     Spacer()
@@ -213,10 +215,10 @@ struct ConsoleView: View {
                     HStack(spacing: 4) {
                         Image(systemName: "arrow.up")
                             .font(.system(size: 9))
-                            .foregroundColor(Color(red: 0.0, green: 0.90, blue: 1.0))
+                            .foregroundColor(SmartTheme.blueBright)
                         Text(viewModel.stats.formattedNetworkTx)
                             .font(.system(size: 10, design: .monospaced))
-                            .foregroundColor(Color(white: 0.70))
+                            .foregroundColor(SmartTheme.textSecondary)
                     }
                 }
             }
@@ -227,7 +229,7 @@ struct ConsoleView: View {
         VStack(alignment: .leading, spacing: 2) {
             Text(label)
                 .font(.system(size: 9, weight: .semibold))
-                .foregroundColor(Color(white: 0.50))
+                .foregroundColor(SmartTheme.textMuted)
             Text(value)
                 .font(.system(size: 11, weight: .bold, design: .monospaced))
                 .foregroundColor(highlightColor)

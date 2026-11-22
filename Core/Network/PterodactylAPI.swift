@@ -326,4 +326,20 @@ final class PterodactylAPI {
         )
         _ = try await executeRequest(request)
     }
+    
+    /// Obtiene el historial real de actividad del servidor
+    func getServerActivity(id: String) async throws -> [ActivityLogData] {
+        let request = try makeRequest(path: "/api/client/servers/\(id)/activity")
+        let (data, _) = try await executeRequest(request)
+        let response = try JSONDecoder().decode(ActivityLogResponse.self, from: data)
+        return response.data
+    }
+    
+    /// Obtiene la lista real de subusuarios con acceso al servidor
+    func getServerSubusers(id: String) async throws -> [SubuserData] {
+        let request = try makeRequest(path: "/api/client/servers/\(id)/users")
+        let (data, _) = try await executeRequest(request)
+        let response = try JSONDecoder().decode(SubusersResponse.self, from: data)
+        return response.data
+    }
 }

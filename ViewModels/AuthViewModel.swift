@@ -53,7 +53,7 @@ final class AuthViewModel: ObservableObject {
             self.showError = true
             HapticFeedback.error()
         } catch {
-            self.errorMessage = "No se pudo establecer conexión con LynxNodes. Revisa tu clave y conexión."
+            self.errorMessage = "No se pudo establecer conexión con el servidor. Revisa tu clave y conexión."
             self.showError = true
             HapticFeedback.error()
         }

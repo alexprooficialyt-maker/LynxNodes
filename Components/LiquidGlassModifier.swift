@@ -1,6 +1,6 @@
 import SwiftUI
 
-/// Modificador de estilo Liquid Glass (iOS 26 Style) con paleta Negro & Amarillo Dorado Lynx
+/// Modificador de estilo Liquid Glass (iOS 26 Style) con paleta Negro, Azul y Blanco
 /// Fondo negro profundo con materiales translúcidos, efecto refracción de cristal/agua,
 /// bordes especulares finos (0.5-0.8pt) y esquinas redondeadas continuas.
 struct LiquidGlassModifier: ViewModifier {
@@ -8,7 +8,7 @@ struct LiquidGlassModifier: ViewModifier {
     var strokeOpacity: Double = 0.16
     var fillOpacity: Double = 0.50
     var shadowRadius: CGFloat = 12
-    var highlightGold: Bool = false
+    var highlightBlue: Bool = false
     
     func body(content: Content) -> some View {
         content
@@ -20,14 +20,14 @@ struct LiquidGlassModifier: ViewModifier {
                     
                     // Capa de tinte cristal negro profundo
                     RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
-                        .fill(LynxTheme.bgElevated.opacity(fillOpacity))
+                        .fill(SmartTheme.bgElevated.opacity(fillOpacity))
                     
                     // Brillo especular superior simulando refracción de agua/cristal
                     RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
                         .fill(
                             LinearGradient(
                                 colors: [
-                                    highlightGold ? LynxTheme.gold.opacity(0.12) : Color.white.opacity(0.08),
+                                    highlightBlue ? SmartTheme.blue.opacity(0.12) : Color.white.opacity(0.08),
                                     Color.white.opacity(0.02),
                                     Color.clear
                                 ],
@@ -42,7 +42,7 @@ struct LiquidGlassModifier: ViewModifier {
                 // Borde especular fino de 0.8pt
                 RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
                     .strokeBorder(
-                        highlightGold ? LynxTheme.specularBorderGradient :
+                        highlightBlue ? SmartTheme.specularBorderGradient :
                             LinearGradient(
                                 stops: [
                                     .init(color: Color.white.opacity(strokeOpacity + 0.14), location: 0.0),
@@ -72,21 +72,21 @@ extension View {
             strokeOpacity: strokeOpacity,
             fillOpacity: fillOpacity,
             shadowRadius: shadowRadius,
-            highlightGold: highlightGold
+            highlightBlue: highlightGold
         ))
     }
     
-    /// Fondo de pantalla completo oscuro profundo con sutil haz ámbar/oro ambiental de LynxNodes
+    /// Fondo de pantalla completo oscuro profundo con sutil haz azul ambiental de SmartBot
     func liquidDarkBackground() -> some View {
         ZStack {
             // Fondo base negro azabache absoluto
-            LynxTheme.bgBlack
+            SmartTheme.bgBlack
                 .ignoresSafeArea()
             
-            // Halo ámbar/dorado superior ambiental muy suave
+            // Halo azul superior ambiental muy suave
             RadialGradient(
                 colors: [
-                    LynxTheme.gold.opacity(0.12),
+                    SmartTheme.blue.opacity(0.10),
                     Color.clear
                 ],
                 center: .top,

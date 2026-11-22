@@ -29,7 +29,7 @@ enum NetworkError: LocalizedError, Equatable {
             if let msg = msg, !msg.isEmpty {
                 return "Error del panel (\(code)): \(msg)"
             }
-            return "El panel de LynxNodes devolvió un error interno del servidor (\(code))."
+            return "El panel devolvió un error interno del servidor (\(code))."
         case .decodingError(let detail):
             return "Error al interpretar la respuesta del panel: \(detail)"
         case .connectionFailed:
@@ -44,9 +44,9 @@ enum NetworkError: LocalizedError, Equatable {
     var recoverySuggestion: String? {
         switch self {
         case .unauthorized:
-            return "Genera una nueva Client API Key en https://panel.lynxnodes.es/account/api e ingrésala en la app."
+            return "Genera una nueva Client API Key e ingrésala en la app."
         case .connectionFailed:
-            return "Comprueba si puedes abrir https://panel.lynxnodes.es/ en Safari."
+            return "Comprueba tu conexión a internet o el estado del panel."
         default:
             return nil
         }

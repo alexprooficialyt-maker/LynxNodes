@@ -21,30 +21,30 @@ enum ServerState: String, Codable, CaseIterable {
     
     var color: Color {
         switch self {
-        case .running: return Color(red: 0.13, green: 0.77, blue: 0.37) // #22C55E
-        case .starting: return Color(red: 1.00, green: 0.72, blue: 0.00) // #FFB800
-        case .stopping: return Color(red: 1.00, green: 0.58, blue: 0.00) // #FF9500
-        case .offline: return Color(red: 0.94, green: 0.27, blue: 0.27) // #EF4444
-        case .unknown: return Color(white: 0.45)
+        case .running: return SmartTheme.statusRunning // #30D158
+        case .starting: return SmartTheme.statusStarting // #FFD60A
+        case .stopping: return SmartTheme.statusStopping // #FF9F0A
+        case .offline: return SmartTheme.statusOffline // #FF453A
+        case .unknown: return SmartTheme.textMuted
         }
     }
     
     var backgroundColor: Color {
         switch self {
-        case .running: return Color(red: 0.13, green: 0.77, blue: 0.37).opacity(0.14)
-        case .starting: return Color(red: 1.00, green: 0.72, blue: 0.00).opacity(0.14)
-        case .stopping: return Color(red: 1.00, green: 0.58, blue: 0.00).opacity(0.14)
-        case .offline: return Color(red: 0.94, green: 0.27, blue: 0.27).opacity(0.14)
+        case .running: return SmartTheme.statusRunning.opacity(0.14)
+        case .starting: return SmartTheme.statusStarting.opacity(0.14)
+        case .stopping: return SmartTheme.statusStopping.opacity(0.14)
+        case .offline: return SmartTheme.statusOffline.opacity(0.14)
         case .unknown: return Color.white.opacity(0.06)
         }
     }
     
     var borderColor: Color {
         switch self {
-        case .running: return Color(red: 0.13, green: 0.77, blue: 0.37).opacity(0.35)
-        case .starting: return Color(red: 1.00, green: 0.72, blue: 0.00).opacity(0.35)
-        case .stopping: return Color(red: 1.00, green: 0.58, blue: 0.00).opacity(0.35)
-        case .offline: return Color(red: 0.94, green: 0.27, blue: 0.27).opacity(0.35)
+        case .running: return SmartTheme.statusRunning.opacity(0.35)
+        case .starting: return SmartTheme.statusStarting.opacity(0.35)
+        case .stopping: return SmartTheme.statusStopping.opacity(0.35)
+        case .offline: return SmartTheme.statusOffline.opacity(0.35)
         case .unknown: return Color.white.opacity(0.12)
         }
     }

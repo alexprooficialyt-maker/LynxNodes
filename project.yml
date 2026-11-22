@@ -18,7 +18,7 @@ settings:
     TARGETED_DEVICE_FAMILY: "1"
     ENABLE_BITCODE: NO
     SUPPORTED_PLATFORMS: "iphoneos iphonesimulator"
-    INFOPLIST_KEY_NSFaceIDUsageDescription: "LynxNodes utiliza Face ID para proteger el acceso a tus servidores de Pterodactyl."
+    INFOPLIST_KEY_NSFaceIDUsageDescription: "SmartBot utiliza Face ID para proteger el acceso a tus servidores."
 
 targets:
   LynxNodes:
@@ -41,12 +41,12 @@ targets:
         CODE_SIGNING_ALLOWED: NO
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
-        INFOPLIST_KEY_NSFaceIDUsageDescription: "LynxNodes utiliza Face ID para proteger el acceso a tus servidores de Pterodactyl."
+        INFOPLIST_KEY_NSFaceIDUsageDescription: "SmartBot utiliza Face ID para proteger el acceso a tus servidores."
     info:
       path: Resources/Info.plist
       properties:
         CFBundleName: LynxNodes
-        CFBundleDisplayName: "LynxNodes"
+        CFBundleDisplayName: "SmartBot"
         CFBundleIdentifier: com.lynxnodes.app
         CFBundleVersion: "1"
         CFBundleShortVersionString: "1.0.0"

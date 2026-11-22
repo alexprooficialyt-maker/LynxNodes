@@ -14,7 +14,7 @@ struct ServerListView: View {
                     HStack(spacing: 10) {
                         Image(systemName: "magnifyingglass")
                             .font(.system(size: 14))
-                            .foregroundColor(Color(red: 1.0, green: 0.72, blue: 0.0))
+                            .foregroundColor(SmartTheme.blue)
                         
                         TextField("Buscar por nombre, nodo o ID...", text: $viewModel.searchText)
                             .textFieldStyle(PlainTextFieldStyle())
@@ -28,16 +28,16 @@ struct ServerListView: View {
                                 viewModel.searchText = ""
                             } label: {
                                 Image(systemName: "xmark.circle.fill")
-                                    .foregroundColor(Color(white: 0.45))
+                                    .foregroundColor(SmartTheme.textMuted)
                             }
                         }
                     }
                     .padding(12)
-                    .background(Color(red: 0.07, green: 0.08, blue: 0.12))
+                    .background(Color(red: 0.05, green: 0.06, blue: 0.08))
                     .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
                     .overlay(
                         RoundedRectangle(cornerRadius: 14, style: .continuous)
-                            .stroke(viewModel.searchText.isEmpty ? Color.white.opacity(0.12) : Color(red: 1.0, green: 0.72, blue: 0.0).opacity(0.5), lineWidth: 0.8)
+                            .stroke(viewModel.searchText.isEmpty ? Color.white.opacity(0.10) : SmartTheme.blue.opacity(0.6), lineWidth: 0.8)
                     )
                     
                     // Píldoras de Filtro
@@ -56,13 +56,13 @@ struct ServerListView: View {
                                     .padding(.vertical, 6)
                                     .background(
                                         RoundedRectangle(cornerRadius: 12, style: .continuous)
-                                            .fill(isSelected ? Color(red: 1.0, green: 0.72, blue: 0.0).opacity(0.20) : Color.white.opacity(0.04))
+                                            .fill(isSelected ? SmartTheme.blue.opacity(0.22) : Color.white.opacity(0.04))
                                     )
                                     .overlay(
                                         RoundedRectangle(cornerRadius: 12, style: .continuous)
-                                            .stroke(isSelected ? Color(red: 1.0, green: 0.72, blue: 0.0).opacity(0.6) : Color.white.opacity(0.08), lineWidth: 0.8)
+                                            .stroke(isSelected ? SmartTheme.blue.opacity(0.6) : Color.white.opacity(0.08), lineWidth: 0.8)
                                     )
-                                    .foregroundColor(isSelected ? Color(red: 1.0, green: 0.76, blue: 0.1) : Color(white: 0.70))
+                                    .foregroundColor(isSelected ? .white : SmartTheme.textSecondary)
                             }
                         }
                         
@@ -82,7 +82,7 @@ struct ServerListView: View {
                             VStack(spacing: 12) {
                                 Image(systemName: "server.rack")
                                     .font(.system(size: 32))
-                                    .foregroundColor(Color(red: 1.0, green: 0.72, blue: 0.0).opacity(0.4))
+                                    .foregroundColor(SmartTheme.blue.opacity(0.4))
                                 
                                 Text("No se encontraron servidores")
                                     .font(.system(size: 15, weight: .semibold))
@@ -90,7 +90,7 @@ struct ServerListView: View {
                                 
                                 Text("Comprueba tus filtros o verifica que tu cuenta tenga servidores asignados.")
                                     .font(.system(size: 13))
-                                    .foregroundColor(Color(white: 0.55))
+                                    .foregroundColor(SmartTheme.textSecondary)
                                     .multilineTextAlignment(.center)
                                     .padding(.horizontal, 32)
                             }
@@ -106,7 +106,7 @@ struct ServerListView: View {
                             }
                         }
                         
-                        // ESPACIO INFERIOR AMPLIADO: Garantiza que la última tarjeta nunca quede tapada
+                        // ESPACIO INFERIOR AMPLIADO
                         Spacer().frame(height: 120)
                     }
                     .padding(.horizontal, 20)

@@ -1,6 +1,7 @@
 import SwiftUI
 
-/// Barra de navegación por rutas (Breadcrumbs) para el explorador de archivos con acentos Lynx
+/// Barra de navegación por rutas (Breadcrumbs) para el explorador de archivos
+/// Estética Apple iOS 26 Liquid Glass en Negro, Azul y Blanco
 struct BreadcrumbsView: View {
     let currentPath: String
     let onSelectPath: (String) -> Void
@@ -16,7 +17,7 @@ struct BreadcrumbsView: View {
                     HStack(spacing: 4) {
                         Image(systemName: "server.rack")
                             .font(.system(size: 11, weight: .medium))
-                            .foregroundColor(currentPath == "/" ? LynxTheme.goldBright : LynxTheme.textSecondary)
+                            .foregroundColor(currentPath == "/" ? SmartTheme.blue : SmartTheme.textSecondary)
                         Text("raíz")
                             .font(.system(size: 12, weight: .semibold, design: .monospaced))
                     }
@@ -24,13 +25,13 @@ struct BreadcrumbsView: View {
                     .padding(.vertical, 6)
                     .background(
                         RoundedRectangle(cornerRadius: 10, style: .continuous)
-                            .fill(currentPath == "/" ? LynxTheme.gold.opacity(0.2) : Color.white.opacity(0.06))
+                            .fill(currentPath == "/" ? SmartTheme.blue.opacity(0.2) : Color.white.opacity(0.06))
                     )
                     .overlay(
                         RoundedRectangle(cornerRadius: 10, style: .continuous)
-                            .stroke(currentPath == "/" ? LynxTheme.gold.opacity(0.5) : Color.clear, lineWidth: 0.8)
+                            .stroke(currentPath == "/" ? SmartTheme.blue.opacity(0.5) : Color.clear, lineWidth: 0.8)
                     )
-                    .foregroundColor(currentPath == "/" ? LynxTheme.goldBright : LynxTheme.textSecondary)
+                    .foregroundColor(currentPath == "/" ? .white : SmartTheme.textSecondary)
                 }
                 
                 // Segmentos
@@ -38,7 +39,7 @@ struct BreadcrumbsView: View {
                 ForEach(segments.indices, id: \.self) { index in
                     Image(systemName: "chevron.right")
                         .font(.system(size: 9, weight: .bold))
-                        .foregroundColor(LynxTheme.textMuted)
+                        .foregroundColor(SmartTheme.textMuted)
                     
                     let segment = segments[index]
                     let isLast = index == segments.count - 1
@@ -54,13 +55,13 @@ struct BreadcrumbsView: View {
                             .padding(.vertical, 6)
                             .background(
                                 RoundedRectangle(cornerRadius: 10, style: .continuous)
-                                    .fill(isLast ? LynxTheme.gold.opacity(0.25) : Color.white.opacity(0.06))
+                                    .fill(isLast ? SmartTheme.blue.opacity(0.25) : Color.white.opacity(0.06))
                             )
                             .overlay(
                                 RoundedRectangle(cornerRadius: 10, style: .continuous)
-                                    .stroke(isLast ? LynxTheme.goldBright.opacity(0.6) : Color.clear, lineWidth: 0.8)
+                                    .stroke(isLast ? SmartTheme.blue.opacity(0.6) : Color.clear, lineWidth: 0.8)
                             )
-                            .foregroundColor(isLast ? LynxTheme.goldBright : LynxTheme.textSecondary)
+                            .foregroundColor(isLast ? .white : SmartTheme.textSecondary)
                     }
                 }
             }

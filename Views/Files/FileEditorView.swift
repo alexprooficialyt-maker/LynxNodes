@@ -1,6 +1,7 @@
 import SwiftUI
 
-/// Visor y editor de archivos de texto y código (.env, .json, .yml, .js, .txt, etc.) en Negro y Amarillo
+/// Visor y editor de archivos de texto y código (.env, .json, .yml, .js, .txt, etc.)
+/// Estética Apple iOS 26 Liquid Glass en Negro, Azul y Blanco
 struct FileEditorView: View {
     let fileName: String
     @Binding var content: String
@@ -24,7 +25,7 @@ struct FileEditorView: View {
                     HStack(spacing: 6) {
                         Image(systemName: "doc.text")
                             .font(.system(size: 13))
-                            .foregroundColor(LynxTheme.goldBright)
+                            .foregroundColor(SmartTheme.blue)
                         
                         Text(fileName)
                             .font(.system(size: 14, weight: .bold, design: .monospaced))
@@ -37,11 +38,11 @@ struct FileEditorView: View {
                     if saveSuccess {
                         Text("Guardado")
                             .font(.system(size: 11, weight: .semibold))
-                            .foregroundColor(LynxTheme.statusRunning)
+                            .foregroundColor(SmartTheme.statusRunning)
                             .transition(.opacity)
                     }
                     
-                    // Botón Guardar en Dorado
+                    // Botón Guardar en Azul SmartBot
                     Button {
                         Task {
                             await onSave()
@@ -50,7 +51,7 @@ struct FileEditorView: View {
                         HStack(spacing: 5) {
                             if isSaving {
                                 ProgressView()
-                                    .progressViewStyle(CircularProgressViewStyle(tint: .black))
+                                    .progressViewStyle(CircularProgressViewStyle(tint: .white))
                                     .scaleEffect(0.7)
                             } else {
                                 Image(systemName: "square.and.arrow.down")
@@ -60,19 +61,19 @@ struct FileEditorView: View {
                             Text("Guardar")
                                 .font(.system(size: 13, weight: .bold))
                         }
-                        .foregroundColor(.black)
+                        .foregroundColor(.white)
                         .padding(.horizontal, 14)
                         .padding(.vertical, 7)
-                        .background(LynxTheme.goldGradient)
+                        .background(SmartTheme.blueGradient)
                         .clipShape(Capsule())
-                        .shadow(color: LynxTheme.gold.opacity(0.35), radius: 6, y: 2)
+                        .shadow(color: SmartTheme.blue.opacity(0.35), radius: 6, y: 2)
                     }
                     .disabled(isSaving || !hasChanges)
                     .opacity(hasChanges ? 1.0 : 0.45)
                 }
                 .padding(.horizontal, 16)
                 .padding(.vertical, 12)
-                .background(LynxTheme.bgElevated)
+                .background(SmartTheme.bgElevated)
                 
                 Divider()
                     .background(Color.white.opacity(0.10))
@@ -82,7 +83,7 @@ struct FileEditorView: View {
                     .font(.system(size: 13, weight: .regular, design: .monospaced))
                     .foregroundColor(Color(red: 0.95, green: 0.96, blue: 0.98))
                     .scrollContentBackground(.hidden)
-                    .background(LynxTheme.bgBlack)
+                    .background(SmartTheme.bgBlack)
                     .autocapitalization(.none)
                     .disableAutocorrection(true)
                     .padding(8)
@@ -97,7 +98,7 @@ struct FileEditorView: View {
                             dismiss()
                         }
                     }
-                    .foregroundColor(LynxTheme.textSecondary)
+                    .foregroundColor(SmartTheme.textSecondary)
                 }
             }
             .onAppear {

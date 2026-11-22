@@ -59,7 +59,7 @@ final class ServerListViewModel: ObservableObject {
         } catch let error as NetworkError {
             self.errorMessage = error.localizedDescription
         } catch {
-            self.errorMessage = "Error al obtener servidores de LynxNodes."
+            self.errorMessage = "Error al obtener servidores."
         }
         
         isLoading = false

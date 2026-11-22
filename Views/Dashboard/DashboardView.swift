@@ -1,7 +1,7 @@
 import SwiftUI
 
-/// Pestaña Inicio: Resumen general y acceso rápido a servidores
-/// 100% Datos Reales, Cabecera con Icono.jpg y píldora ONLINE, Tab Bar inset corregido
+/// Pestaña Inicio: Resumen general y acceso rápido a servidores de SmartBot
+/// 100% Datos Reales, estética Apple iOS 26 Liquid Glass en Negro, Azul y Blanco
 struct DashboardView: View {
     @EnvironmentObject private var appEnv: AppEnvironment
     @StateObject private var viewModel = DashboardViewModel()
@@ -11,59 +11,49 @@ struct DashboardView: View {
             ScrollView(showsIndicators: false) {
                 VStack(alignment: .leading, spacing: 22) {
                     
-                    // Cabecera Principal con Logo Oficial y Píldora ONLINE
+                    // Cabecera Principal con Logo Oficial SmartBot y Píldora ONLINE
                     HStack(alignment: .center, spacing: 12) {
-                        // Icono oficial pequeño con esquinas redondeadas
                         Image("AppLogo")
                             .resizable()
                             .aspectRatio(contentMode: .fit)
-                            .frame(width: 38, height: 38)
+                            .frame(width: 40, height: 40)
                             .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
                             .overlay(
                                 RoundedRectangle(cornerRadius: 10, style: .continuous)
-                                    .strokeBorder(Color(red: 1.0, green: 0.72, blue: 0.0).opacity(0.4), lineWidth: 0.8)
+                                    .strokeBorder(SmartTheme.blue.opacity(0.4), lineWidth: 0.8)
                             )
-                            .shadow(color: Color(red: 1.0, green: 0.72, blue: 0.0).opacity(0.25), radius: 6)
+                            .shadow(color: SmartTheme.blue.opacity(0.3), radius: 6)
                         
                         VStack(alignment: .leading, spacing: 2) {
-                            HStack(spacing: 6) {
-                                Text("LynxNodes")
-                                    .font(.system(size: 22, weight: .black, design: .rounded))
-                                    .foregroundStyle(
-                                        LinearGradient(
-                                            colors: [
-                                                Color(red: 1.00, green: 0.75, blue: 0.00),
-                                                Color(red: 1.00, green: 0.58, blue: 0.00)
-                                            ],
-                                            startPoint: .leading,
-                                            endPoint: .trailing
-                                        )
-                                    )
+                            HStack(spacing: 8) {
+                                Text("SmartBot")
+                                    .font(.system(size: 22, weight: .bold, design: .rounded))
+                                    .foregroundColor(.white)
                                 
                                 // Píldora discreta • ONLINE cuando la API responde
                                 if viewModel.isApiOnline {
                                     HStack(spacing: 4) {
                                         Circle()
-                                            .fill(Color(red: 0.13, green: 0.77, blue: 0.37))
+                                            .fill(SmartTheme.statusRunning)
                                             .frame(width: 6, height: 6)
                                         Text("ONLINE")
                                             .font(.system(size: 9, weight: .bold, design: .rounded))
-                                            .foregroundColor(Color(red: 0.13, green: 0.77, blue: 0.37))
+                                            .foregroundColor(SmartTheme.statusRunning)
                                     }
-                                    .padding(.horizontal, 6)
+                                    .padding(.horizontal, 7)
                                     .padding(.vertical, 3)
-                                    .background(Color(red: 0.13, green: 0.77, blue: 0.37).opacity(0.12))
+                                    .background(SmartTheme.statusRunning.opacity(0.12))
                                     .clipShape(Capsule())
                                     .overlay(
                                         Capsule()
-                                            .stroke(Color(red: 0.13, green: 0.77, blue: 0.37).opacity(0.3), lineWidth: 0.5)
+                                            .stroke(SmartTheme.statusRunning.opacity(0.25), lineWidth: 0.5)
                                     )
                                 }
                             }
                             
-                            Text("https://panel.lynxnodes.es")
-                                .font(.system(size: 11, design: .monospaced))
-                                .foregroundColor(Color(white: 0.50))
+                            Text("Sistema de Control de Hosting")
+                                .font(.system(size: 11, weight: .medium))
+                                .foregroundColor(SmartTheme.textSecondary)
                         }
                         
                         Spacer()
@@ -76,11 +66,19 @@ struct DashboardView: View {
                         } label: {
                             Image(systemName: "arrow.clockwise")
                                 .font(.system(size: 13, weight: .bold))
-                                .foregroundColor(Color(red: 1.0, green: 0.75, blue: 0.0))
+                                .foregroundColor(SmartTheme.blue)
                                 .rotationEffect(.degrees(viewModel.isRefreshingSilently ? 360 : 0))
-                                .animation(viewModel.isRefreshingSilently ? .linear(duration: 1).repeatForever(autoreverses: false) : .default, value: viewModel.isRefreshingSilently)
+                                .animation(
+                                    viewModel.isRefreshingSilently ? .linear(duration: 1).repeatForever(autoreverses: false) : .default,
+                                    value: viewModel.isRefreshingSilently
+                                )
                                 .padding(10)
-                                .liquidGlass(cornerRadius: 12, strokeOpacity: 0.25, fillOpacity: 0.5)
+                                .background(SmartTheme.bgCard)
+                                .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 12, style: .continuous)
+                                        .stroke(Color.white.opacity(0.08), lineWidth: 0.8)
+                                )
                         }
                     }
                     .padding(.horizontal, 20)
@@ -91,22 +89,22 @@ struct DashboardView: View {
                         statusSummaryCard(
                             title: "En línea",
                             count: viewModel.runningCount,
-                            color: Color(red: 0.13, green: 0.77, blue: 0.37),
-                            bgColor: Color(red: 0.13, green: 0.77, blue: 0.37).opacity(0.12)
+                            color: SmartTheme.statusRunning,
+                            bgColor: SmartTheme.statusRunning.opacity(0.12)
                         )
                         
                         statusSummaryCard(
                             title: "Iniciando",
                             count: viewModel.startingCount,
-                            color: Color(red: 1.00, green: 0.72, blue: 0.00),
-                            bgColor: Color(red: 1.00, green: 0.72, blue: 0.00).opacity(0.12)
+                            color: SmartTheme.statusStarting,
+                            bgColor: SmartTheme.statusStarting.opacity(0.12)
                         )
                         
                         statusSummaryCard(
                             title: "Apagados",
                             count: viewModel.offlineCount,
-                            color: Color(red: 0.94, green: 0.27, blue: 0.27),
-                            bgColor: Color(red: 0.94, green: 0.27, blue: 0.27).opacity(0.12)
+                            color: SmartTheme.statusOffline,
+                            bgColor: SmartTheme.statusOffline.opacity(0.12)
                         )
                     }
                     .padding(.horizontal, 20)
@@ -125,11 +123,11 @@ struct DashboardView: View {
                             } label: {
                                 HStack(spacing: 4) {
                                     Text("Ver todos")
-                                        .font(.system(size: 13, weight: .bold))
+                                        .font(.system(size: 13, weight: .semibold))
                                     Image(systemName: "chevron.right")
                                         .font(.system(size: 10, weight: .bold))
                                 }
-                                .foregroundColor(Color(red: 1.0, green: 0.75, blue: 0.0))
+                                .foregroundColor(SmartTheme.blue)
                             }
                         }
                         .padding(.horizontal, 20)
@@ -143,11 +141,11 @@ struct DashboardView: View {
                                     VStack(spacing: 10) {
                                         Image(systemName: "server.rack")
                                             .font(.system(size: 30))
-                                            .foregroundColor(Color(red: 1.0, green: 0.75, blue: 0.0).opacity(0.4))
+                                            .foregroundColor(SmartTheme.blue.opacity(0.5))
                                         
                                         Text("No hay servidores disponibles")
                                             .font(.system(size: 14, weight: .medium))
-                                            .foregroundColor(Color(white: 0.65))
+                                            .foregroundColor(SmartTheme.textSecondary)
                                     }
                                     .frame(maxWidth: .infinity)
                                 }
@@ -181,16 +179,16 @@ struct DashboardView: View {
                                     VStack(alignment: .leading, spacing: 4) {
                                         Text("Memoria RAM en Uso Real")
                                             .font(.system(size: 12, weight: .medium))
-                                            .foregroundColor(Color(white: 0.60))
+                                            .foregroundColor(SmartTheme.textSecondary)
                                         
                                         HStack(alignment: .firstTextBaseline, spacing: 4) {
                                             Text(formattedRam(Int(viewModel.totalLiveUsedMemoryMB)))
                                                 .font(.system(size: 20, weight: .bold, design: .monospaced))
-                                                .foregroundColor(Color(red: 0.13, green: 0.77, blue: 0.37))
+                                                .foregroundColor(SmartTheme.statusRunning)
                                             
                                             Text("/ \(formattedRam(viewModel.totalAllocatedMemoryMB))")
                                                 .font(.system(size: 13, weight: .medium, design: .monospaced))
-                                                .foregroundColor(Color(white: 0.50))
+                                                .foregroundColor(SmartTheme.textMuted)
                                         }
                                     }
                                     
@@ -199,16 +197,16 @@ struct DashboardView: View {
                                     VStack(alignment: .trailing, spacing: 4) {
                                         Text("Almacenamiento Total")
                                             .font(.system(size: 12, weight: .medium))
-                                            .foregroundColor(Color(white: 0.60))
+                                            .foregroundColor(SmartTheme.textSecondary)
                                         
                                         HStack(alignment: .firstTextBaseline, spacing: 4) {
                                             Text(formattedDisk(Int(viewModel.totalLiveUsedDiskMB)))
                                                 .font(.system(size: 20, weight: .bold, design: .monospaced))
-                                                .foregroundColor(Color(red: 0.0, green: 0.90, blue: 1.0))
+                                                .foregroundColor(SmartTheme.blue)
                                             
                                             Text("/ \(formattedDisk(viewModel.totalAllocatedDiskMB))")
                                                 .font(.system(size: 13, weight: .medium, design: .monospaced))
-                                                .foregroundColor(Color(white: 0.50))
+                                                .foregroundColor(SmartTheme.textMuted)
                                         }
                                     }
                                 }
@@ -222,7 +220,7 @@ struct DashboardView: View {
                                             .fill(Color.white.opacity(0.08))
                                             .frame(height: 5)
                                         Capsule()
-                                            .fill(Color(red: 0.13, green: 0.77, blue: 0.37))
+                                            .fill(SmartTheme.statusRunning)
                                             .frame(width: max(0, min(geo.size.width * CGFloat(ratio), geo.size.width)), height: 5)
                                     }
                                 }
@@ -269,7 +267,7 @@ struct DashboardView: View {
                 
                 Text(title)
                     .font(.system(size: 11, weight: .semibold, design: .rounded))
-                    .foregroundColor(Color(white: 0.65))
+                    .foregroundColor(SmartTheme.textSecondary)
             }
         }
     }

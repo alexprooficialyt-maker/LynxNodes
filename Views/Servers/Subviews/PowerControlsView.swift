@@ -10,7 +10,7 @@ struct PowerControlsView: View {
             powerButton(
                 title: "Iniciar",
                 iconType: .powerStart,
-                tint: Color(red: 0.22, green: 0.85, blue: 0.45),
+                tint: SmartTheme.statusRunning,
                 disabled: viewModel.serverState == .running || viewModel.isPerformingPowerAction
             ) {
                 Task {
@@ -22,7 +22,7 @@ struct PowerControlsView: View {
             powerButton(
                 title: "Reiniciar",
                 iconType: .powerRestart,
-                tint: Color(red: 1.0, green: 0.82, blue: 0.25),
+                tint: SmartTheme.statusStarting,
                 disabled: viewModel.serverState == .offline || viewModel.isPerformingPowerAction
             ) {
                 Task {
@@ -34,7 +34,7 @@ struct PowerControlsView: View {
             powerButton(
                 title: "Apagar",
                 iconType: .powerStop,
-                tint: Color(red: 1.0, green: 0.55, blue: 0.20),
+                tint: SmartTheme.statusStopping,
                 disabled: viewModel.serverState == .offline || viewModel.isPerformingPowerAction
             ) {
                 viewModel.showStopConfirmation = true
@@ -44,7 +44,7 @@ struct PowerControlsView: View {
             powerButton(
                 title: "Forzar",
                 iconType: .powerKill,
-                tint: Color(red: 0.95, green: 0.32, blue: 0.32),
+                tint: SmartTheme.statusOffline,
                 disabled: viewModel.serverState == .offline || viewModel.isPerformingPowerAction
             ) {
                 viewModel.showKillConfirmation = true
