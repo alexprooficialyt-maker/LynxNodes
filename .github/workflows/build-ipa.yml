@@ -1,0 +1,57 @@
+name: Compilar IPA LynxNodes
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build Unsigned IPA
+    runs-on: macos-14
+
+    steps:
+      - name: Descargar Código (Checkout)
+        uses: actions/checkout@v4
+
+      - name: Seleccionar Versión de Xcode
+        run: |
+          sudo xcode-select -s /Applications/Xcode_15.4.app/Contents/Developer || sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
+          xcodebuild -version
+
+      - name: Preparar Directorio de Compilación
+        run: |
+          mkdir -p build
+          mkdir -p output
+
+      - name: Compilar Archivo (.xcarchive) sin firma
+        run: |
+          xcodebuild archive \
+            -project LynxNodes.xcodeproj \
+            -scheme LynxNodes \
+            -configuration Release \
+            -destination 'generic/platform=iOS' \
+            -archivePath build/LynxNodes.xcarchive \
+            CODE_SIGN_IDENTITY="" \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGN_ENTITLEMENTS=""
+
+      - name: Empaquetar Aplicación en archivo .IPA
+        run: |
+          mkdir -p build/Payload
+          cp -r build/LynxNodes.xcarchive/Products/Applications/LynxNodes.app build/Payload/
+          cd build
+          zip -qr ../output/LynxNodes.ipa Payload
+          cd ..
+          ls -lh output/LynxNodes.ipa
+
+      - name: Subir Artifact (.IPA Descargable)
+        uses: actions/upload-artifact@v4
+        with:
+          name: LynxNodes-iOS-IPA
+          path: output/LynxNodes.ipa
+          if-no-files-found: error
+          retention-days: 30
