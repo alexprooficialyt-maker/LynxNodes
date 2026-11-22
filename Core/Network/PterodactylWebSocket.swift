@@ -73,6 +73,11 @@ final class PterodactylWebSocket {
         send(message: message)
     }
     
+    func requestLogs() {
+        let message = WebSocketMessage(event: "send logs", args: ["0"])
+        send(message: message)
+    }
+    
     func setPowerState(_ signal: PowerSignal) {
         let message = WebSocketMessage(event: "set state", args: [signal.rawValue])
         send(message: message)
@@ -138,6 +143,7 @@ final class PterodactylWebSocket {
                 switch message.event {
                 case "auth success":
                     self.isConnected = true
+                    self.requestLogs()
                     self.delegate?.webSocketDidConnect()
                     
                 case "token expiring", "token expired":

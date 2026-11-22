@@ -1,6 +1,6 @@
 import SwiftUI
 
-/// Indicador visual del estado del servidor (punto LED + texto opcional)
+/// Indicador visual del estado del servidor (punto LED + texto con colores reales de LynxNodes)
 struct StatusBadge: View {
     let state: ServerState
     var showText: Bool = true
@@ -14,8 +14,8 @@ struct StatusBadge: View {
                 Circle()
                     .fill(state.color.opacity(0.35))
                     .frame(width: 14, height: 14)
-                    .scaleEffect(isPulsing && state == .starting ? 1.4 : 1.0)
-                    .opacity(isPulsing && state == .starting ? 0.2 : 0.6)
+                    .scaleEffect(isPulsing && (state == .starting || state == .running) ? 1.3 : 1.0)
+                    .opacity(isPulsing && state == .starting ? 0.3 : 0.6)
                 
                 // Punto LED central
                 Circle()
@@ -29,20 +29,18 @@ struct StatusBadge: View {
             
             if showText {
                 Text(state.displayName)
-                    .font(.system(size: 12, weight: .medium, design: .rounded))
+                    .font(.system(size: 12, weight: .bold, design: .rounded))
                     .foregroundColor(state.color)
             }
         }
-        .padding(.horizontal, showText ? 8 : 4)
-        .padding(.vertical, 4)
-        .background(
-            RoundedRectangle(cornerRadius: 12, style: .continuous)
-                .fill(state.color.opacity(0.12))
-        )
+        .padding(.horizontal, showText ? 9 : 5)
+        .padding(.vertical, 5)
+        .background(state.backgroundColor)
         .overlay(
             RoundedRectangle(cornerRadius: 12, style: .continuous)
-                .stroke(state.color.opacity(0.25), lineWidth: 0.5)
+                .stroke(state.borderColor, lineWidth: 0.8)
         )
+        .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
         .onAppear {
             if state == .starting || state == .stopping {
                 withAnimation(

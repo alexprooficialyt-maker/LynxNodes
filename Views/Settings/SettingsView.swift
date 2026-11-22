@@ -215,7 +215,8 @@ struct SettingsView: View {
                     }
                     .padding(.top, 12)
                     
-                    Spacer().frame(height: 100)
+                    // Margen inferior para que nunca quede tapado por el menú flotante
+                    Spacer().frame(height: 130)
                 }
                 .padding(.top, 16)
             }

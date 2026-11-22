@@ -143,7 +143,8 @@ final class PterodactylAPI {
         
         do {
             let decoded = try JSONDecoder().decode(PterodactylServerListResponse.self, from: data)
-            return decoded.data.map { $0.attributes }
+            let rawServers = decoded.data.map { $0.attributes }
+            return rawServers
         } catch {
             throw NetworkError.decodingError("El formato de respuesta no coincide con Pterodactyl.")
         }
@@ -155,6 +156,48 @@ final class PterodactylAPI {
         let (data, _) = try await executeRequest(request)
         let decoded = try JSONDecoder().decode(PterodactylServerListResponse.self, from: data)
         return decoded.data.map { $0.attributes }
+    }
+    
+    /// Obtiene el estado y recursos en tiempo real de un servidor (GET /api/client/servers/{id}/resources)
+    func getServerResources(id: String) async throws -> ServerResourceAttributes {
+        let request = try makeRequest(path: "/api/client/servers/\(id)/resources")
+        let (data, _) = try await executeRequest(request)
+        let decoded = try JSONDecoder().decode(PterodactylResourcesResponse.self, from: data)
+        return decoded.attributes
+    }
+    
+    /// Obtiene la lista completa de servidores y concurrentemente consulta el estado real (/resources) de cada uno
+    func getServersWithResources() async throws -> [Server] {
+        let servers = try await getServers()
+        guard !servers.isEmpty else { return [] }
+        
+        return await withTaskGroup(of: (String, ServerState, ResourceUsage?).self, returning: [Server].self) { group in
+            for server in servers {
+                group.addTask {
+                    do {
+                        let res = try await self.getServerResources(id: server.id)
+                        let state = ServerState(rawValue: res.currentState.lowercased()) ?? .unknown
+                        return (server.id, state, res.resources)
+                    } catch {
+                        return (server.id, .offline, nil)
+                    }
+                }
+            }
+            
+            var resourceMap: [String: (ServerState, ResourceUsage?)] = [:]
+            for await (id, state, resources) in group {
+                resourceMap[id] = (state, resources)
+            }
+            
+            return servers.map { server in
+                var updated = server
+                if let (state, resources) = resourceMap[server.id] {
+                    updated.currentState = state
+                    updated.currentResources = resources
+                }
+                return updated
+            }
+        }
     }
     
     /// Obtiene información detallada de un servidor específico

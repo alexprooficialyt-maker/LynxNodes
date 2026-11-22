@@ -7,6 +7,7 @@ final class AppEnvironment: ObservableObject {
     @Published var isConfigured: Bool = false
     @Published var isBiometricallyUnlocked: Bool = true
     @Published var selectedTab: TabItem = .home
+    @Published var hideTabBar: Bool = false
     @Published var cachedServers: [Server] = []
     @Published var favoriteServerIds: Set<String> = []
     

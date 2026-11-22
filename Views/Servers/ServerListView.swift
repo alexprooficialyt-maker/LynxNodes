@@ -1,6 +1,6 @@
 import SwiftUI
 
-/// Pestaña Servidores: Lista completa con buscador y filtros (Tema Negro y Amarillo)
+/// Pestaña Servidores: Lista completa con buscador, filtros y 100% Datos Reales
 struct ServerListView: View {
     @EnvironmentObject private var appEnv: AppEnvironment
     @StateObject private var viewModel = ServerListViewModel()
@@ -14,7 +14,7 @@ struct ServerListView: View {
                     HStack(spacing: 10) {
                         Image(systemName: "magnifyingglass")
                             .font(.system(size: 14))
-                            .foregroundColor(LynxTheme.gold)
+                            .foregroundColor(Color(red: 1.0, green: 0.72, blue: 0.0))
                         
                         TextField("Buscar por nombre, nodo o ID...", text: $viewModel.searchText)
                             .textFieldStyle(PlainTextFieldStyle())
@@ -28,16 +28,16 @@ struct ServerListView: View {
                                 viewModel.searchText = ""
                             } label: {
                                 Image(systemName: "xmark.circle.fill")
-                                    .foregroundColor(LynxTheme.textMuted)
+                                    .foregroundColor(Color(white: 0.45))
                             }
                         }
                     }
                     .padding(12)
-                    .background(Color.black.opacity(0.45))
+                    .background(Color(red: 0.07, green: 0.08, blue: 0.12))
                     .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
                     .overlay(
                         RoundedRectangle(cornerRadius: 14, style: .continuous)
-                            .stroke(viewModel.searchText.isEmpty ? Color.white.opacity(0.12) : LynxTheme.gold.opacity(0.5), lineWidth: 0.8)
+                            .stroke(viewModel.searchText.isEmpty ? Color.white.opacity(0.12) : Color(red: 1.0, green: 0.72, blue: 0.0).opacity(0.5), lineWidth: 0.8)
                     )
                     
                     // Píldoras de Filtro
@@ -56,13 +56,13 @@ struct ServerListView: View {
                                     .padding(.vertical, 6)
                                     .background(
                                         RoundedRectangle(cornerRadius: 12, style: .continuous)
-                                            .fill(isSelected ? LynxTheme.goldGlassGradient : LinearGradient(colors: [Color.white.opacity(0.05)], startPoint: .top, endPoint: .bottom))
+                                            .fill(isSelected ? Color(red: 1.0, green: 0.72, blue: 0.0).opacity(0.20) : Color.white.opacity(0.04))
                                     )
                                     .overlay(
                                         RoundedRectangle(cornerRadius: 12, style: .continuous)
-                                            .stroke(isSelected ? LynxTheme.goldBright.opacity(0.6) : Color.white.opacity(0.08), lineWidth: 0.8)
+                                            .stroke(isSelected ? Color(red: 1.0, green: 0.72, blue: 0.0).opacity(0.6) : Color.white.opacity(0.08), lineWidth: 0.8)
                                     )
-                                    .foregroundColor(isSelected ? LynxTheme.goldBright : LynxTheme.textSecondary)
+                                    .foregroundColor(isSelected ? Color(red: 1.0, green: 0.76, blue: 0.1) : Color(white: 0.70))
                             }
                         }
                         
@@ -82,7 +82,7 @@ struct ServerListView: View {
                             VStack(spacing: 12) {
                                 Image(systemName: "server.rack")
                                     .font(.system(size: 32))
-                                    .foregroundColor(LynxTheme.gold.opacity(0.4))
+                                    .foregroundColor(Color(red: 1.0, green: 0.72, blue: 0.0).opacity(0.4))
                                 
                                 Text("No se encontraron servidores")
                                     .font(.system(size: 15, weight: .semibold))
@@ -90,7 +90,7 @@ struct ServerListView: View {
                                 
                                 Text("Comprueba tus filtros o verifica que tu cuenta tenga servidores asignados.")
                                     .font(.system(size: 13))
-                                    .foregroundColor(LynxTheme.textSecondary)
+                                    .foregroundColor(Color(white: 0.55))
                                     .multilineTextAlignment(.center)
                                     .padding(.horizontal, 32)
                             }
@@ -106,7 +106,8 @@ struct ServerListView: View {
                             }
                         }
                         
-                        Spacer().frame(height: 100) // Espacio para tab bar
+                        // ESPACIO INFERIOR AMPLIADO: Garantiza que la última tarjeta nunca quede tapada
+                        Spacer().frame(height: 120)
                     }
                     .padding(.horizontal, 20)
                     .padding(.top, 8)
@@ -120,6 +121,10 @@ struct ServerListView: View {
             .liquidDarkBackground()
             .task {
                 await viewModel.loadServers(appEnv: appEnv)
+                viewModel.startAutoRefresh(appEnv: appEnv)
+            }
+            .onDisappear {
+                viewModel.stopAutoRefresh()
             }
         }
     }

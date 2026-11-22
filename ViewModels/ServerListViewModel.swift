@@ -1,7 +1,7 @@
 import SwiftUI
 import Combine
 
-/// ViewModel para la lista y filtrado de servidores
+/// ViewModel para la lista y filtrado de servidores (100% Datos Reales)
 @MainActor
 final class ServerListViewModel: ObservableObject {
     @Published var servers: [Server] = []
@@ -9,6 +9,8 @@ final class ServerListViewModel: ObservableObject {
     @Published var selectedFilter: ServerFilter = .all
     @Published var isLoading: Bool = false
     @Published var errorMessage: String?
+    
+    private var refreshTask: Task<Void, Never>?
     
     enum ServerFilter: String, CaseIterable, Identifiable {
         case all = "Todos"
@@ -35,7 +37,7 @@ final class ServerListViewModel: ObservableObject {
             case .running:
                 return server.currentState == .running
             case .offline:
-                return server.currentState == .offline || server.currentState == .unknown
+                return server.currentState == .offline || server.currentState == .stopping || server.currentState == .unknown
             }
         }
     }
@@ -45,11 +47,13 @@ final class ServerListViewModel: ObservableObject {
             return
         }
         
-        isLoading = true
+        if servers.isEmpty {
+            isLoading = true
+        }
         errorMessage = nil
         
         do {
-            let fetched = try await PterodactylAPI.shared.getServers()
+            let fetched = try await PterodactylAPI.shared.getServersWithResources()
             self.servers = fetched
             appEnv.cachedServers = fetched
         } catch let error as NetworkError {
@@ -59,5 +63,26 @@ final class ServerListViewModel: ObservableObject {
         }
         
         isLoading = false
+    }
+    
+    func startAutoRefresh(appEnv: AppEnvironment) {
+        stopAutoRefresh()
+        refreshTask = Task {
+            while !Task.isCancelled {
+                try? await Task.sleep(nanoseconds: 8_000_000_000)
+                if !Task.isCancelled {
+                    let fetched = (try? await PterodactylAPI.shared.getServersWithResources()) ?? []
+                    if !fetched.isEmpty && !Task.isCancelled {
+                        self.servers = fetched
+                        appEnv.cachedServers = fetched
+                    }
+                }
+            }
+        }
+    }
+    
+    func stopAutoRefresh() {
+        refreshTask?.cancel()
+        refreshTask = nil
     }
 }

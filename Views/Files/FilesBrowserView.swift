@@ -113,7 +113,8 @@ struct FilesBrowserView: View {
                         }
                     }
                     
-                    Spacer().frame(height: 80)
+                    // Margen inferior para que ningún archivo quede tapado por el menú flotante
+                    Spacer().frame(height: 120)
                 }
                 .padding(.horizontal, 16)
                 .padding(.top, 10)

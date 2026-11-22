@@ -23,8 +23,12 @@ struct MainTabView: View {
             .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
             .ignoresSafeArea()
             
-            // Barra inferior flotante estilo Liquid Glass
-            FloatingTabBar(selectedTab: $appEnv.selectedTab)
+            // Barra inferior flotante estilo Liquid Glass (se oculta al entrar a un servidor o consola)
+            if !appEnv.hideTabBar {
+                FloatingTabBar(selectedTab: $appEnv.selectedTab)
+                    .transition(.move(edge: .bottom).combined(with: .opacity))
+            }
         }
+        .animation(.spring(response: 0.35, dampingFraction: 0.8), value: appEnv.hideTabBar)
     }
 }

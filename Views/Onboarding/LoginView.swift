@@ -1,72 +1,92 @@
 import SwiftUI
 
-/// Pantalla de configuración inicial y conexión con Pterodactyl en LynxNodes (Tema Negro y Amarillo)
+/// Pantalla de configuración inicial y conexión con Pterodactyl en LynxNodes
+/// Diseño premium con Icono.jpg (AppLogo), Liquid Glass y estética oficial Amarillo & Negro
 struct LoginView: View {
     @EnvironmentObject private var appEnv: AppEnvironment
     @StateObject private var viewModel = AuthViewModel()
     @State private var isShowingUrlEditor = false
+    @State private var showKeyPlain = false
     
     var body: some View {
         ZStack {
-            // Fondo Negro OLED
-            LynxTheme.bgBlack
+            // Fondo Negro Obsidiana Lynx
+            Color(red: 0.04, green: 0.05, blue: 0.07)
                 .ignoresSafeArea()
             
-            // Halo de luz ámbar/dorado de LynxNodes en la parte superior
+            // Halo sutil de luz ámbar/dorado detrás del logo
             Circle()
-                .fill(LynxTheme.gold.opacity(0.18))
-                .blur(radius: 100)
-                .frame(width: 340, height: 340)
-                .offset(y: -220)
+                .fill(Color(red: 1.0, green: 0.72, blue: 0.0).opacity(0.16))
+                .blur(radius: 90)
+                .frame(width: 300, height: 300)
+                .offset(y: -210)
             
             ScrollView(showsIndicators: false) {
-                VStack(spacing: 28) {
-                    Spacer().frame(height: 36)
+                VStack(spacing: 26) {
+                    Spacer().frame(height: 28)
                     
-                    // Logo / Icono oficial de la App
+                    // Logo oficial (Icono.jpg) con acabado de esquinas suaves iOS y resplandor
                     VStack(spacing: 14) {
-                        Image("AppIcon-1024")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 92, height: 92)
-                            .clipShape(RoundedRectangle(cornerRadius: 24, style: .continuous))
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 24, style: .continuous)
-                                    .strokeBorder(
-                                        LinearGradient(
-                                            colors: [LynxTheme.goldBright.opacity(0.6), Color.white.opacity(0.15)],
-                                            startPoint: .topLeading,
-                                            endPoint: .bottomTrailing
-                                        ),
-                                        lineWidth: 1.2
-                                    )
-                            )
-                            .shadow(color: LynxTheme.gold.opacity(0.35), radius: 16, x: 0, y: 8)
-                        
-                        HStack(spacing: 6) {
-                            Text("LYNX")
-                                .font(.system(size: 28, weight: .black, design: .rounded))
-                                .foregroundColor(LynxTheme.goldBright)
-                            Text("NODES")
-                                .font(.system(size: 28, weight: .bold, design: .rounded))
-                                .foregroundColor(.white)
+                        ZStack {
+                            // Brillo ambiental
+                            RoundedRectangle(cornerRadius: 24, style: .continuous)
+                                .fill(Color(red: 1.0, green: 0.72, blue: 0.0).opacity(0.30))
+                                .frame(width: 96, height: 96)
+                                .blur(radius: 12)
+                            
+                            Image("AppLogo")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 92, height: 92)
+                                .clipShape(RoundedRectangle(cornerRadius: 22, style: .continuous))
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 22, style: .continuous)
+                                        .strokeBorder(
+                                            LinearGradient(
+                                                colors: [
+                                                    Color(red: 1.0, green: 0.75, blue: 0.0).opacity(0.7),
+                                                    Color.white.opacity(0.2)
+                                                ],
+                                                startPoint: .topLeading,
+                                                endPoint: .bottomTrailing
+                                            ),
+                                            lineWidth: 1.2
+                                        )
+                                )
+                                .shadow(color: Color.black.opacity(0.55), radius: 14, x: 0, y: 8)
                         }
                         
-                        Text("Gestor nativo de servidores Pterodactyl")
-                            .font(.system(size: 13, weight: .regular))
-                            .foregroundColor(LynxTheme.textSecondary)
+                        // Título con degradado Amarillo/Naranja LynxNodes
+                        VStack(spacing: 4) {
+                            Text("LynxNodes")
+                                .font(.system(size: 30, weight: .black, design: .rounded))
+                                .foregroundStyle(
+                                    LinearGradient(
+                                        colors: [
+                                            Color(red: 1.00, green: 0.76, blue: 0.05), // #FFC20D
+                                            Color(red: 1.00, green: 0.58, blue: 0.00)  // #FF9400
+                                        ],
+                                        startPoint: .topLeading,
+                                        endPoint: .bottomTrailing
+                                    )
+                                )
+                            
+                            Text("Panel de Control")
+                                .font(.system(size: 13, weight: .medium, design: .rounded))
+                                .foregroundColor(Color(white: 0.65))
+                        }
                     }
                     
-                    // Tarjeta de Conexión Liquid Glass
+                    // Tarjeta Liquid Glass de Conexión
                     GlassCard(cornerRadius: 24, padding: 22) {
                         VStack(alignment: .leading, spacing: 20) {
                             
                             // Selector de URL del Panel
                             VStack(alignment: .leading, spacing: 8) {
                                 HStack {
-                                    Text("Panel LynxNodes")
+                                    Text("Panel de Servidores")
                                         .font(.system(size: 12, weight: .semibold, design: .rounded))
-                                        .foregroundColor(LynxTheme.textSecondary)
+                                        .foregroundColor(Color(white: 0.65))
                                     
                                     Spacer()
                                     
@@ -76,8 +96,8 @@ struct LoginView: View {
                                         }
                                     } label: {
                                         Text(isShowingUrlEditor ? "Listo" : "Editar URL")
-                                            .font(.system(size: 11, weight: .semibold))
-                                            .foregroundColor(LynxTheme.goldBright)
+                                            .font(.system(size: 11, weight: .bold))
+                                            .foregroundColor(Color(red: 1.0, green: 0.72, blue: 0.0))
                                     }
                                 }
                                 
@@ -87,20 +107,20 @@ struct LoginView: View {
                                         .font(.system(size: 14, design: .monospaced))
                                         .foregroundColor(.white)
                                         .padding(12)
-                                        .background(Color.black.opacity(0.5))
+                                        .background(Color(red: 0.07, green: 0.08, blue: 0.12))
                                         .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
                                         .overlay(
                                             RoundedRectangle(cornerRadius: 12, style: .continuous)
-                                                .stroke(LynxTheme.gold.opacity(0.4), lineWidth: 0.8)
+                                                .stroke(Color(red: 1.0, green: 0.72, blue: 0.0).opacity(0.4), lineWidth: 0.8)
                                         )
                                         .autocapitalization(.none)
                                         .disableAutocorrection(true)
                                 } else {
                                     HStack(spacing: 8) {
                                         Circle()
-                                            .fill(LynxTheme.goldBright)
+                                            .fill(Color(red: 0.13, green: 0.77, blue: 0.37))
                                             .frame(width: 8, height: 8)
-                                            .shadow(color: LynxTheme.goldBright.opacity(0.6), radius: 4)
+                                            .shadow(color: Color(red: 0.13, green: 0.77, blue: 0.37).opacity(0.8), radius: 4)
                                         
                                         Text(viewModel.panelUrl)
                                             .font(.system(size: 14, weight: .medium, design: .monospaced))
@@ -109,53 +129,92 @@ struct LoginView: View {
                                         Spacer()
                                     }
                                     .padding(12)
-                                    .background(Color.white.opacity(0.04))
+                                    .background(Color(red: 0.07, green: 0.08, blue: 0.12))
                                     .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 12, style: .continuous)
+                                            .stroke(Color.white.opacity(0.08), lineWidth: 0.8)
+                                    )
                                 }
                             }
                             
                             Divider()
                                 .background(Color.white.opacity(0.08))
                             
-                            // Campo de API Key (Manual por el usuario, sin hardcode)
+                            // Campo de API Key con Botón Pegar y Ver/Ocultar
                             VStack(alignment: .leading, spacing: 8) {
                                 HStack {
                                     Text("Client API Key")
                                         .font(.system(size: 12, weight: .semibold, design: .rounded))
-                                        .foregroundColor(LynxTheme.textSecondary)
+                                        .foregroundColor(Color(white: 0.65))
                                     
                                     Spacer()
                                     
-                                    Text("Privada y local")
-                                        .font(.system(size: 10, weight: .medium))
-                                        .foregroundColor(LynxTheme.gold.opacity(0.8))
+                                    // Botón para pegar directamente del portapapeles
+                                    Button {
+                                        if let pasted = UIPasteboard.general.string {
+                                            viewModel.apiKey = pasted.trimmingCharacters(in: .whitespacesAndNewlines)
+                                            HapticFeedback.light()
+                                        }
+                                    } label: {
+                                        HStack(spacing: 4) {
+                                            Image(systemName: "doc.on.clipboard")
+                                                .font(.system(size: 11))
+                                            Text("Pegar")
+                                                .font(.system(size: 11, weight: .bold))
+                                        }
+                                        .foregroundColor(Color(red: 1.0, green: 0.75, blue: 0.0))
+                                        .padding(.horizontal, 9)
+                                        .padding(.vertical, 4)
+                                        .background(Color(red: 1.0, green: 0.75, blue: 0.0).opacity(0.14))
+                                        .clipShape(Capsule())
+                                    }
                                 }
                                 
-                                SecureField("Pega tu clave (ptlc_...)", text: $viewModel.apiKey)
-                                    .textFieldStyle(PlainTextFieldStyle())
-                                    .font(.system(size: 14, design: .monospaced))
-                                    .foregroundColor(.white)
-                                    .padding(14)
-                                    .background(Color.black.opacity(0.5))
-                                    .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
-                                    .overlay(
-                                        RoundedRectangle(cornerRadius: 14, style: .continuous)
-                                            .stroke(viewModel.apiKey.isEmpty ? Color.white.opacity(0.12) : LynxTheme.gold.opacity(0.5), lineWidth: 0.8)
-                                    )
-                                    .autocapitalization(.none)
-                                    .disableAutocorrection(true)
+                                HStack(spacing: 8) {
+                                    if showKeyPlain {
+                                        TextField("Pega tu clave (ptlc_...)", text: $viewModel.apiKey)
+                                            .textFieldStyle(PlainTextFieldStyle())
+                                            .font(.system(size: 13, design: .monospaced))
+                                            .foregroundColor(.white)
+                                            .autocapitalization(.none)
+                                            .disableAutocorrection(true)
+                                    } else {
+                                        SecureField("Pega tu clave (ptlc_...)", text: $viewModel.apiKey)
+                                            .textFieldStyle(PlainTextFieldStyle())
+                                            .font(.system(size: 13, design: .monospaced))
+                                            .foregroundColor(.white)
+                                            .autocapitalization(.none)
+                                            .disableAutocorrection(true)
+                                    }
+                                    
+                                    Button {
+                                        showKeyPlain.toggle()
+                                    } label: {
+                                        Image(systemName: showKeyPlain ? "eye.slash" : "eye")
+                                            .font(.system(size: 13))
+                                            .foregroundColor(Color(white: 0.45))
+                                    }
+                                }
+                                .padding(14)
+                                .background(Color(red: 0.07, green: 0.08, blue: 0.12))
+                                .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 14, style: .continuous)
+                                        .stroke(viewModel.apiKey.isEmpty ? Color.white.opacity(0.12) : Color(red: 1.0, green: 0.72, blue: 0.0).opacity(0.55), lineWidth: 0.8)
+                                )
                                 
                                 HStack(spacing: 6) {
                                     Image(systemName: "key.fill")
                                         .font(.system(size: 10))
-                                        .foregroundColor(LynxTheme.gold)
-                                    Text("Panel > Account > API Credentials > Create API Key")
+                                        .foregroundColor(Color(red: 1.0, green: 0.75, blue: 0.0))
+                                    Text("Generada en: Account > API Credentials > Create API Key")
                                         .font(.system(size: 11))
-                                        .foregroundColor(LynxTheme.textMuted)
+                                        .foregroundColor(Color(white: 0.45))
                                 }
                             }
                             
-                            // Botón "Probar y Conectar" en Amarillo Lynx
+                            // Botón "Conectar" oficial LynxNodes
                             Button {
                                 Task {
                                     await viewModel.testAndConnect(appEnv: appEnv)
@@ -168,22 +227,31 @@ struct LoginView: View {
                                             .scaleEffect(0.9)
                                     } else {
                                         Image(systemName: "bolt.fill")
-                                            .font(.system(size: 14, weight: .bold))
+                                            .font(.system(size: 14, weight: .black))
                                     }
                                     
-                                    Text(viewModel.isLoading ? "Validando en LynxNodes..." : "Probar y Conectar")
-                                        .font(.system(size: 15, weight: .bold, design: .rounded))
+                                    Text(viewModel.isLoading ? "Conectando con LynxNodes..." : "Conectar")
+                                        .font(.system(size: 16, weight: .black, design: .rounded))
                                 }
                                 .foregroundColor(.black)
                                 .frame(maxWidth: .infinity)
                                 .frame(height: 52)
-                                .background(LynxTheme.goldGradient)
+                                .background(
+                                    LinearGradient(
+                                        colors: [
+                                            Color(red: 1.00, green: 0.75, blue: 0.00), // #FFC000
+                                            Color(red: 1.00, green: 0.65, blue: 0.00)  // #FFA600
+                                        ],
+                                        startPoint: .topLeading,
+                                        endPoint: .bottomTrailing
+                                    )
+                                )
                                 .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
                                 .overlay(
                                     RoundedRectangle(cornerRadius: 16, style: .continuous)
-                                        .stroke(Color.white.opacity(0.4), lineWidth: 0.8)
+                                        .stroke(Color.white.opacity(0.35), lineWidth: 0.8)
                                 )
-                                .shadow(color: LynxTheme.gold.opacity(0.45), radius: 12, y: 4)
+                                .shadow(color: Color(red: 1.0, green: 0.72, blue: 0.0).opacity(0.40), radius: 12, y: 4)
                             }
                             .disabled(viewModel.isLoading)
                             .padding(.top, 4)
@@ -191,21 +259,21 @@ struct LoginView: View {
                     }
                     .padding(.horizontal, 20)
                     
-                    // Aviso de Seguridad Local Keychain
+                    // Aviso de Seguridad Keychain
                     HStack(alignment: .top, spacing: 10) {
                         Image(systemName: "lock.shield.fill")
                             .font(.system(size: 14))
-                            .foregroundColor(LynxTheme.gold)
+                            .foregroundColor(Color(red: 1.0, green: 0.75, blue: 0.0))
                             .padding(.top, 2)
                         
-                        Text("Tu clave de cliente no está grabada en la app. Se guardará de manera cifrada exclusivamente en el Keychain nativo de tu iPhone para que solo tú tengas acceso.")
+                        Text("Tu clave de cliente se almacena de forma encriptada en el Keychain de tu iPhone. No se envía a ningún servidor externo aparte de panel.lynxnodes.es.")
                             .font(.system(size: 12))
-                            .foregroundColor(LynxTheme.textSecondary)
+                            .foregroundColor(Color(white: 0.55))
                             .lineSpacing(2)
                     }
-                    .padding(.horizontal, 28)
+                    .padding(.horizontal, 26)
                     
-                    Spacer()
+                    Spacer().frame(height: 30)
                 }
             }
         }
