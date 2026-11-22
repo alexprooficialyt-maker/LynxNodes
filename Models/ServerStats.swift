@@ -21,7 +21,7 @@ struct ServerStats: Codable, Hashable {
         case state
     }
     
-    struct NetworkPayload: Codable {
+    struct NetworkPayload: Codable, Hashable {
         let rxBytes: Int64
         let txBytes: Int64
         
@@ -49,6 +49,18 @@ struct ServerStats: Codable, Hashable {
             networkRxBytes = 0
             networkTxBytes = 0
         }
+    }
+    
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(memoryBytes, forKey: .memoryBytes)
+        try container.encode(memoryLimitBytes, forKey: .memoryLimitBytes)
+        try container.encode(cpuAbsolute, forKey: .cpuAbsolute)
+        try container.encode(diskBytes, forKey: .diskBytes)
+        try container.encode(uptimeMilliseconds, forKey: .uptime)
+        try container.encode(state.rawValue, forKey: .state)
+        let net = NetworkPayload(rxBytes: networkRxBytes, txBytes: networkTxBytes)
+        try container.encode(net, forKey: .network)
     }
     
     init(

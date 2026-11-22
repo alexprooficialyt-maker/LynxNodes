@@ -40,6 +40,8 @@ final class BiometricAuthManager {
             return .touchID
         case .opticID:
             return .opticID
+        case .none:
+            return .none
         @unknown default:
             return .faceID
         }
@@ -60,7 +62,6 @@ final class BiometricAuthManager {
         
         var error: NSError?
         guard context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) else {
-            // Si la biometría no está disponible, intentar con código del dispositivo
             if context.canEvaluatePolicy(.deviceOwnerAuthentication, error: &error) {
                 do {
                     let success = try await context.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: reason)

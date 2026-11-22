@@ -52,7 +52,7 @@ struct ConsoleView: View {
                         RoundedRectangle(cornerRadius: 16, style: .continuous)
                             .stroke(Color.white.opacity(0.12), lineWidth: 0.8)
                     )
-                    .onChange(of: viewModel.logs.count) { _ in
+                    .onChange(of: viewModel.logs.count) {
                         if viewModel.autoScrollEnabled, let lastId = viewModel.logs.last?.id {
                             proxy.scrollTo(lastId, anchor: .bottom)
                         }

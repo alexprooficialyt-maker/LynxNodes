@@ -2,6 +2,7 @@ import SwiftUI
 import Combine
 
 /// Estado global de la aplicación LynxNodes
+@MainActor
 final class AppEnvironment: ObservableObject {
     @Published var isConfigured: Bool = false
     @Published var isBiometricallyUnlocked: Bool = true
@@ -59,17 +60,13 @@ final class AppEnvironment: ObservableObject {
         switch result {
         case .success(let success):
             if success {
-                await MainActor.run {
-                    self.isBiometricallyUnlocked = true
-                    HapticFeedback.success()
-                }
+                self.isBiometricallyUnlocked = true
+                HapticFeedback.success()
                 return true
             }
             return false
         case .failure:
-            await MainActor.run {
-                HapticFeedback.error()
-            }
+            HapticFeedback.error()
             return false
         }
     }

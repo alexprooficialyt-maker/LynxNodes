@@ -27,7 +27,7 @@ struct LynxNodesApp: App {
             .animation(.easeInOut(duration: 0.25), value: appEnv.isBiometricallyUnlocked)
             .environmentObject(appEnv)
             .preferredColorScheme(.dark) // Modo oscuro permanente y refinado
-            .onChange(of: scenePhase) { newPhase in
+            .onChange(of: scenePhase) { _, newPhase in
                 if newPhase == .background {
                     appEnv.lockApp()
                 }
